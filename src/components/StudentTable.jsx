@@ -8,17 +8,22 @@ import TableRow from '@mui/material/TableRow';
 import Paper  from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { deleteDoc, doc } from 'firebase/firestore';
+import {db} from '../firebaseConfig'
 
-export default function StudentTable({students}) {
+
+export default function StudentTable({students,setStudents}) {
 
     //update student
-    function handleUpdateStudent(){
-      alert("update called")
+    function handleUpdateStudent(studentId){
+      alert(studentId)
     }
 
     //delete student
-    function handleDeleteStudent(){
-      alert("delete called")
+    async function handleDeleteStudent(studentId){
+     const studentDoc =  doc(db,'students', studentId)
+     await deleteDoc(studentDoc)
+      setStudents(students.filter((student)=> student.id !== studentId))
     }
 
   return (

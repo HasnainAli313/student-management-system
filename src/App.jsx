@@ -4,15 +4,18 @@ import CreateStudent from './components/CreateStudent';
 import StudentList from './components/StudentList';
 import {db} from './firebaseConfig'
 import { collection, getDocs } from 'firebase/firestore'
-import { useState, useEffect } from 'react'
+import { useState,useEffect  } from 'react'
 
 
 function App() {
+  
   const [students, setStudents] = useState([])
-   const studentsCollection =  collection(db, 'students')
 
     const getStudents = async () => {
+  const studentsCollection =  collection(db, 'students')
+
         const studentsSnapshot = await getDocs(studentsCollection)
+
      const studentList = studentsSnapshot.docs.map(doc => (
             {
                 id:doc.id,
@@ -24,15 +27,17 @@ function App() {
     }
 
     useEffect(() => {
-        getStudents()
-    },[students])
+      getStudents()
+  },[students])
+
+
 
   return (
     <>
     <div className='app-container'>
       <h1 className='app-title'>Student Management System</h1>
-      <CreateStudent/>
-      <StudentList/>
+      <CreateStudent getStudents={getStudents}/>
+      <StudentList students={students} setStudents={setStudents}/>
     </div>
     </>
   )

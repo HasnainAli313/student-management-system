@@ -1,14 +1,22 @@
-import { collection, getDocs } from 'firebase/firestore'
 import React from 'react'
-import { useState, useEffect } from 'react'
-import {db} from '../firebaseConfig'
+import {  useEffect } from 'react'
 import StudentTable from './StudentTable'
 
-function StudentList({students}) {
+function StudentList({students,setStudents}) {
+
+
   return (
     <>
     <h1>Student List</h1>
-    <StudentTable students={students}/>
+    {/* <div className='students-list'>
+    {students && students.map((student) =>{
+      return <div key={student.id} className='student'>
+        <h2>{student.name}</h2>
+        <p>Age: {student.age}</p>
+      </div>
+    })}
+    </div> */}
+    <StudentTable students={students} setStudents={setStudents}/>
     </>
   )
 }
