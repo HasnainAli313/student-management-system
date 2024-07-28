@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { TextField } from '@mui/material';
 
-export default function UpdateStudentDialog({editDialogOpen,currentStudent,handleDialogClose,handleChange}) {
+export default function UpdateStudentDialog({editDialogOpen,currentStudent,handleDialogClose,handleChange,handleSaveStudent}) {
 
 
   return (
@@ -40,7 +40,7 @@ export default function UpdateStudentDialog({editDialogOpen,currentStudent,handl
          </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleDialogClose} >
+          <Button onClick={handleSaveStudent} >
             Save
           </Button>
         </DialogActions>

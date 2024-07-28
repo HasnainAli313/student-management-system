@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper  from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import {db} from '../firebaseConfig'
 import UpdateStudentDialog from './UpdateStudentDialog'
 import { useState } from "react";
@@ -33,7 +33,7 @@ const [currentStudent, setCurrentStudent] = useState(null)
       setStudents(students.filter((student)=> student.id !== studentId))
     }
 
-    //close Upaate Dialog
+    //close Update Dialog
     function handleDialogClose(){
       setEditDialogOpen(false)
       setCurrentStudent(null)
@@ -48,8 +48,20 @@ const [currentStudent, setCurrentStudent] = useState(null)
           [name]:value,
         }
       ) )
-      
     }    
+
+    async function handleSaveStudent(){
+     const studentDoc =  doc(db, 'students',currentStudent.id);
+     await updateDoc(studentDoc,{
+      name:currentStudent.name,
+      age:currentStudent.age
+     })
+    //  1 logic
+     setStudents((student)=> student.id === currentStudent.id ? currentStudent: student)
+    //  2 logic 
+    //  setStudents(students.map((student)=> student.id === currentStudent.id ? currentStudent: student ))
+     handleDialogClose()
+    }
 
   return (
     <>
@@ -87,7 +99,8 @@ const [currentStudent, setCurrentStudent] = useState(null)
   editDialogOpen={editDialogOpen} 
   currentStudent={currentStudent } 
   handleDialogClose={handleDialogClose}
-  handleChange={handleChange}/>
+  handleChange={handleChange}
+  handleSaveStudent={handleSaveStudent}/>
     </>
   );
 }
