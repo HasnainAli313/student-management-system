@@ -10,14 +10,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteDoc, doc } from 'firebase/firestore';
 import {db} from '../firebaseConfig'
-import UpdateStudent from './UpdateStudent'
+import UpdateStudentDialog from './UpdateStudentDialog'
+import { useState } from "react";
 
 
 export default function StudentTable({students,setStudents}) {
+const [editDialogOpen, setEditDialogOpen] = useState(false )
+const [currentStudent, setCurrentStudent] = useState(null)
+    
 
     //update student
     function handleUpdateStudent(studentId){
-      alert(studentId)
+     const student =  students.find(s=> s.id === studentId)
+     setCurrentStudent(student)
+      setEditDialogOpen(true)
     }
 
     //delete student
@@ -26,6 +32,24 @@ export default function StudentTable({students,setStudents}) {
      await deleteDoc(studentDoc)
       setStudents(students.filter((student)=> student.id !== studentId))
     }
+
+    //close Upaate Dialog
+    function handleDialogClose(){
+      setEditDialogOpen(false)
+      setCurrentStudent(null)
+    }
+
+    //handle change in dialog values
+    function handleChange(event){
+      const {name,value} = event.target
+      setCurrentStudent((prev)=> (
+        {
+          ...prev,
+          [name]:value,
+        }
+      ) )
+      
+    }    
 
   return (
     <>
@@ -59,7 +83,11 @@ export default function StudentTable({students,setStudents}) {
       </TableBody>
     </Table>
   </TableContainer>
-  <UpdateStudent/>
+  <UpdateStudentDialog 
+  editDialogOpen={editDialogOpen} 
+  currentStudent={currentStudent } 
+  handleDialogClose={handleDialogClose}
+  handleChange={handleChange}/>
     </>
   );
 }
